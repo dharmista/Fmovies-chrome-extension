@@ -8,6 +8,9 @@
 // @grant        none
 // ==/UserScript==
 
+/**
+ * Documentation and installation can be found in <a href='fmovies.helplena.co'>Here</a>
+ */
 (function() {
     'use strict';
 
@@ -18,8 +21,16 @@
         +" id='buttonThatNoOneNamesLikeThis' class='btn btn-primary btn-login'>Download all</button><button id='buttonThatNoOneNamesLikeThisPartTwo' class='btn btn-primary btn-login' style='margin-top:10px;' >Get IDM link file</button></div>";
 
     document.getElementById("buttonThatNoOneNamesLikeThis").onclick = function(){
-        let servers = $(".episodes")[0];
-        let episodes = servers.children;
+        let servers = $(".episodes"); let serverSelected = 0;
+        for(var i = 0; i < servers.length; i++){
+            let a = $(".episodes")[i];
+            let serverName = a.parentElement.parentElement.children[0].innerText;
+            //Selects the Fmovies-4 server
+            if(serverName.indexOf("F4") != -1)
+                serverSelected = i;
+        }
+        let server = servers[serverSelected];
+        let episodes = server.children;
         count = episodes.length;
         for(var i = 0; i < episodes.length ; i++){
             let episode = episodes[i].children[0].href;
@@ -30,10 +41,17 @@
     };
 
     document.getElementById("buttonThatNoOneNamesLikeThisPartTwo").onclick = function () {
-        let servers = $(".episodes")[0];
-        let episodes = servers.children;
+        let servers = $(".episodes"); let serverSelected = 0;
+        for(var i = 0; i < servers.length; i++){
+            let a = $(".episodes")[i];
+            let serverName = a.parentElement.parentElement.children[0].innerText;
+            if(serverName.indexOf("F4") != -1)
+                serverSelected = i;
+        }
+        let server = servers[serverSelected];
+        let episodes = server.children;
         count = episodes.length;
-        for(let i = 0; i < episodes.length ; i++){
+        for(var i = 0; i < episodes.length ; i++){
             let episode = episodes[i].children[0].href;
             let pieces = episode.split("/");
             let videoId = pieces[pieces.length - 1];
@@ -63,6 +81,7 @@
     function createTxtFile() {
         var textFile = null;
         let domHyper = document.createElement('a');
+        console.log(idmlinks);
 
         let idmLinksText = "";
         for(var i = 0; i < count; i++)

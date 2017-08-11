@@ -1,3 +1,9 @@
+"""
+    Simple python code to download the files similar to that of IDM.
+    The download links must be passed as a file, and the default file name should be given.
+
+    Ex : python idm.py "Game of Thrones 7 2017 OnlineFri, 11 Aug 2017 11-00-54.txt" GOT
+"""
 import os, sys
 import threading
 

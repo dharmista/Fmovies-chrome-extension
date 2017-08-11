@@ -4,9 +4,11 @@ try:
 except Exception as e:
     os.popen("pip install pySmartDL")
 
-def download(url, path, filename):
+DOWNLOAD_PATH = "c:\\batman\\Downloads"
 
-    obj = SmartDL(url, path + "\\"+filename+".mp4")
+def download(url, path, filename, serial):
+
+    obj = SmartDL(url, path + "\\"+filename+" episode {}- .mp4".format(serial))
     obj.start()
 
 if __name__ == '__main__':
@@ -16,9 +18,10 @@ if __name__ == '__main__':
     filename = sys.argv[2]
 
     f = open(urls)
+    index = 0
 
     for file in f.readlines():
         # or '~/batman/Downloads/' on linux
-        download(file, "c:\\batman\\Downloads", filename)
-
+        download(file, DOWNLOAD_PATH, filename, index)
+        index+=1
     f.close()

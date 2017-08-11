@@ -12,7 +12,7 @@ def download(url, path, filename, serial):
     obj.start()
 
 if __name__ == '__main__':
-    if(len(sys.argv) != 2):
+    if(len(sys.argv) != 3):
         raise Exception("Invalid arguments")
     urls = sys.argv[1]
     filename = sys.argv[2]

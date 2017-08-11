@@ -10,6 +10,8 @@ def download(url, path, filename):
     obj.start()
 
 if __name__ == '__main__':
+    if(len(sys.argv) != 2):
+        raise Exception("Invalid arguments")
     urls = sys.argv[1]
     filename = sys.argv[2]
 
@@ -18,3 +20,5 @@ if __name__ == '__main__':
     for file in f.readlines():
         # or '~/batman/Downloads/' on linux
         download(file, "c:\\batman\\Downloads", filename)
+
+    f.close()

@@ -13,8 +13,7 @@ except Exception as e:
     os.popen("pip install pySmartDL")
     exit(0)
 
-#Set your own download path
-DOWNLOAD_PATH = "c:\\batman\\Downloads"
+DEFAULT_DOWNLOAD_PATH = "c:\\fMovies\\Downloads"
 """
     Keep this based on the size of file u download.
     Size (directly proportional to) thread count
@@ -23,25 +22,32 @@ THREADS_TO_SPLIT = 5
 
 def download(url, path, filename, serial):
 
-    obj = SmartDL(url, path + "\\"+filename+" episode {}- .mp4".format(serial), progress_bar=False, threads = THREADS_TO_SPLIT)
+    obj = SmartDL(url, path + "\\"+filename+" episode - {}.mp4".format(serial),
+                  progress_bar=True, threads = THREADS_TO_SPLIT)
 
     obj.start()
 
-    print("Downloaded successfully episode {}".format(serial))
+    print("Downloaded episode {}".format(serial))
 
 if __name__ == '__main__':
-    if(len(sys.argv) != 3):
-        raise Exception("Invalid arguments")
+    if(len(sys.argv) < 3):
+        print("Invalid length of arguments..")
+        print("Should be like python <file name>.py <file_with_urls> <name_for_episodes> <download_path_optional>")
+        exit(0)
     urls = sys.argv[1]
     filename = sys.argv[2]
+    if(len(sys.argv) > 3):
+        DEFAULT_DOWNLOAD_PATH = sys.argv[3]
+    try:
+        f = open(urls)
+        index = 1
 
-    f = open(urls)
-    index = 0
-
-    for file in f.readlines():
-        #'~/batman/Downloads/' on linux
-        thread = threading.Thread(target=download, args=(file, DOWNLOAD_PATH, filename, index))
-        thread.start()
-        index+=1
-    f.close()
-    print("Working on the downloads.. Downloading parallel'y. Leave this window behind")
+        print("Started Downloading the episodes")
+        for file in f.readlines():
+            #'~/batman/Downloads/' on linux
+            download(file.strip("\n"), DEFAULT_DOWNLOAD_PATH, filename, index)
+            index += 1
+        f.close()
+        print("Downloaded successfully {} episodes..".format(index))
+    except FileNotFoundError as e:
+        print("No such file with episodes.. If your file name has spaces, enclose it in double quotes")
